@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BORCOIN 2: VI — Официальный сайт</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,700;0,900;1,900&family=Pricedown&family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vice: {
+                            pink: '#ff007f',
+                            purple: '#7928ca',
+                            cyan: '#00f2fe',
+                            orange: '#ff5e00',
+                            yellow: '#ffb700',
+                            dark: '#05020c',
+                            card: '#120a24',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'Montserrat', 'sans-serif'],
+                        gta: ['Pricedown', 'Impact', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow': 'neonGlow 2s ease-in-out infinite alternate',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        neonGlow: {
+                            '0%': { filter: 'drop-shadow(0 0 10px rgba(255, 0, 127, 0.6))' },
+                            '100%': { filter: 'drop-shadow(0 0 25px rgba(0, 242, 254, 0.9))' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #05020c;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gta-title {
+            font-family: 'Pricedown', 'Impact', sans-serif;
+            letter-spacing: 2px;
+            text-shadow: 4px 4px 0px #000, -2px -2px 0px #ff007f;
+        }
+
+        .gta-glow {
+            text-shadow: 0 0 20px rgba(255,0,127,0.8), 0 0 40px rgba(0,242,254,0.5);
+        }
+
+        .vice-gradient-text {
+            background: linear-gradient(135deg, #ff007f 0%, #ff5e00 50%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .vice-btn-primary {
+            background: linear-gradient(90deg, #ff007f, #ff5e00);
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .vice-btn-primary:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 35px rgba(255, 0, 127, 0.9), 0 0 20px rgba(255, 94, 0, 0.8);
+        }
+
+        .glass-panel {
+            background: rgba(18, 10, 36, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card-hover:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 0, 127, 0.6);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 0, 127, 0.3);
+        }
+
+        /* Wheel of fortune canvas */
+        #wheel-canvas {
+            filter: drop-shadow(0 0 15px rgba(255, 0, 127, 0.5));
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #05020c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(#ff007f, #00f2fe);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="selection:bg-vice-pink selection:text-white relative">
+
+    <!-- Ambient Glowing Background Circles -->
+    <div class="fixed top-0 left-1/4 w-[600px] h-[600px] bg-vice-pink/15 rounded-full blur-[160px] pointer-events-none -z-10"></div>
+    <div class="fixed bottom-10 right-10 w-[700px] h-[700px] bg-vice-cyan/15 rounded-full blur-[180px] pointer-events-none -z-10"></div>
+    <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-vice-purple/10 rounded-full blur-[200px] pointer-events-none -z-10"></div>
+
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/10 px-4 lg:px-8 py-3.5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <span class="text-3xl md:text-4xl font-black gta-title text-white tracking-widest group-hover:text-vice-pink transition-colors">
+                    BORCOIN<span class="text-vice-pink italic">2</span>
+                </span>
+                <span class="hidden sm:inline-block text-[10px] px-2.5 py-1 rounded-md bg-vice-pink/20 text-vice-pink font-extrabold border border-vice-pink/40 tracking-wider">
+                    VSRAT GAMES x BOROV GAMES
+                </span>
+            </a>
+
+            <!-- Nav Links -->
+            <div class="hidden lg:flex items-center gap-8 font-bold text-xs uppercase tracking-widest text-gray-300">
+                <a href="#about" class="hover:text-vice-pink transition-colors">Об игре</a>
+                <a href="#interactive" class="hover:text-vice-pink transition-colors">Интерактив</a>
+                <a href="#editions" class="hover:text-vice-pink transition-colors">Издания</a>
+                <a href="#comparison" class="hover:text-vice-pink transition-colors">Сравнение</a>
+                <a href="#payouts" class="hover:text-vice-pink transition-colors">Выплаты</a>
+            </div>
+
+            <!-- Controls (Sound Synth & Call to Action) -->
+            <div class="flex items-center gap-3">
+                <button id="sound-toggle" onclick="toggleSynthBeat()" class="glass-panel p-2.5 rounded-xl border border-white/20 hover:border-vice-pink text-gray-300 hover:text-vice-pink transition-all flex items-center gap-2 text-xs font-bold uppercase">
+                    <i id="sound-icon" class="fa-solid fa-volume-xmark text-rose-500"></i>
+                    <span class="hidden sm:inline" id="sound-text">Звук: Выкл</span>
+                </button>
+
+                <a href="#editions" class="vice-btn-primary px-5 py-2.5 rounded-xl font-extrabold uppercase text-xs tracking-wider text-white flex items-center gap-2">
+                    <span>Подробнее</span>
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative min-h-screen pt-32 pb-20 flex items-center justify-center overflow-hidden">
+        <!-- Hero Background Cover -->
+        <div class="absolute inset-0 z-0">
+            <img src="Gemini_Generated_Image_v8eyxtv8eyxtv8ey.jpg" alt="Vice City Banner" class="w-full h-full object-cover opacity-30 scale-105 filter blur-[1px]">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#05020c] via-[#05020c]/70 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#05020c] via-transparent to-[#05020c]"></div>
+        </div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-4 text-center">
+            <!-- Rockstar Badge -->
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-panel border border-vice-pink/40 text-vice-pink font-black text-xs uppercase tracking-widest mb-6 shadow-lg shadow-vice-pink/20 animate-pulse-slow">
+                <i class="fa-solid fa-star text-vice-yellow"></i>
+                <span>PREMIUM VICE CLICKER EXPERIENCE</span>
+                <i class="fa-solid fa-star text-vice-yellow"></i>
+            </div>
+
+            <!-- Main GTA Title Header -->
+            <h1 class="text-6xl sm:text-8xl md:text-9xl font-black gta-title tracking-widest mb-4 uppercase gta-glow leading-none">
+                BORCOIN <span class="vice-gradient-text">2</span>
+            </h1>
+
+            <!-- Subtitle Description -->
+            <p class="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-100 max-w-3xl mx-auto leading-relaxed mb-10 drop-shadow-lg">
+                Кликер с <span class="text-emerald-400 font-black underline decoration-emerald-500 underline-offset-8">реальным выводом денег</span>, с помощью которого вы сможете пройти эту жизнь.
+            </p>
+
+            <!-- Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+                <a href="#editions" class="w-full sm:w-auto vice-btn-primary px-9 py-4 rounded-2xl font-black text-base tracking-wider uppercase flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-gem text-lg"></i>
+                    <span>Выбрать издание</span>
+                </a>
+                <a href="#interactive" class="w-full sm:w-auto glass-panel border border-white/20 hover:border-vice-cyan px-9 py-4 rounded-2xl font-bold text-base tracking-wider uppercase text-white hover:text-vice-cyan transition-all flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-calculator text-vice-cyan"></i>
+                    <span>Калькулятор жизни</span>
+                </a>
+            </div>
+
+            <!-- Live Stats Banner Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mt-20 text-left">
+                <div class="glass-panel p-5 rounded-2xl border-l-4 border-l-vice-pink">
+                    <div class="text-[11px] uppercase text-gray-400 font-black tracking-wider">Всего выведено</div>
+                    <div class="text-2xl font-black text-emerald-400 font-mono mt-1">3,412,890 ₽</div>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl border-l-4 border-l-vice-cyan">
+                    <div class="text-[11px] uppercase text-gray-400 font-black tracking-wider">Активных авторитетов</div>
+                    <div class="text-2xl font-black text-white font-mono mt-1">148,920</div>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl border-l-4 border-l-vice-orange">
+                    <div class="text-[11px] uppercase text-gray-400 font-black tracking-wider">Средний кэшаут</div>
+                    <div class="text-2xl font-black text-vice-yellow font-mono mt-1">12,400 ₽/мес</div>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl border-l-4 border-l-purple-500">
+                    <div class="text-[11px] uppercase text-gray-400 font-black tracking-wider">Скорость выплат</div>
+                    <div class="text-2xl font-black text-vice-pink font-mono mt-1">Мгновенно</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="interactive" class="py-24 relative bg-black/50 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="px-4 py-1.5 rounded-full bg-vice-cyan/20 text-vice-cyan text-xs font-black uppercase tracking-widest border border-vice-cyan/30">
+                    Интерактивный центр Vice City
+                </span>
+                <h2 class="text-4xl md:text-6xl font-black gta-title text-white mt-3">
+                    УПРАВЛЯЙ СВОЕЙ <span class="vice-gradient-text">СУДЬБОЙ</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
+                    Оцените потенциал вашего прогресса, сгенерируйте уличный никнейм и испытайте удачу в рулетке наград!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- WIDGET 1: ROI & Life Calculator (7 cols) -->
+                <div class="lg:col-span-7 glass-panel p-8 rounded-3xl border border-vice-pink/30 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute -top-12 -right-12 w-40 h-40 bg-vice-pink/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-vice-pink/20 border border-vice-pink/40 flex items-center justify-center text-vice-pink">
+                                    <i class="fa-solid fa-calculator text-xl"></i>
+                                </div>
+                                <h3 class="text-2xl font-black text-white">Калькулятор Прохождения Жизни</h3>
+                            </div>
+                            <span class="text-xs text-gray-400 font-mono">v2.0 PRO</span>
+                        </div>
+
+                        <!-- Slider 1: Hours Per Day -->
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-xs font-black uppercase tracking-wider text-gray-300">Часов клика в день:</label>
+                                <span id="hours-display" class="text-lg font-black text-vice-cyan font-mono">3 часа</span>
+                            </div>
+                            <input type="range" id="hours-slider" min="1" max="12" value="3" class="w-full h-3 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-vice-pink">
+                        </div>
+
+                        <!-- Slider 2: Edition Target -->
+                        <div class="mb-8">
+                            <label class="text-xs font-black uppercase tracking-wider text-gray-300 block mb-2">Выберите планируемое издание:</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <button onclick="setCalcEdition('standard', this)" class="calc-edition-btn active p-3 rounded-xl border border-vice-pink bg-vice-pink/20 text-white font-bold text-xs uppercase">
+                                    Standard
+                                </button>
+                                <button onclick="setCalcEdition('ukraine', this)" class="calc-edition-btn p-3 rounded-xl border border-white/10 bg-white/5 text-gray-400 font-bold text-xs uppercase hover:bg-white/10">
+                                    Ukraine (x1.8)
+                                </button>
+                                <button onclick="setCalcEdition('unlimited', this)" class="calc-edition-btn p-3 rounded-xl border border-white/10 bg-white/5 text-gray-400 font-bold text-xs uppercase hover:bg-white/10">
+                                    Unlimited (x3.5)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calculated Goals Outputs -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-white/10">
+                        <div class="bg-black/40 p-4 rounded-2xl border border-white/5">
+                            <div class="text-[10px] uppercase text-gray-400 font-bold mb-1">Доход в месяц</div>
+                            <div id="calc-monthly-cash" class="text-xl font-black text-emerald-400 font-mono">18,000 ₽</div>
+                        </div>
+                        <div class="bg-black/40 p-4 rounded-2xl border border-white/5">
+                            <div class="text-[10px] uppercase text-gray-400 font-bold mb-1">До Bugatti Veyron</div>
+                            <div id="calc-days-bugatti" class="text-xl font-black text-vice-yellow font-mono">340 дней</div>
+                        </div>
+                        <div class="bg-black/40 p-4 rounded-2xl border border-white/5">
+                            <div class="text-[10px] uppercase text-gray-400 font-bold mb-1">Пройдено жизни</div>
+                            <div id="calc-life-percent" class="text-xl font-black text-vice-pink font-mono">84%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WIDGET 2 & 3 (Right column - 5 cols) -->
+                <div class="lg:col-span-5 space-y-8 flex flex-col justify-between">
+                    
+                    <!-- WIDGET 2: Nickname Generator -->
+                    <div class="glass-panel p-6 rounded-3xl border border-vice-cyan/30">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-vice-cyan/20 border border-vice-cyan/40 flex items-center justify-center text-vice-cyan">
+                                <i class="fa-solid fa-id-card text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-black text-white">Генератор Авторитета</h4>
+                                <p class="text-xs text-gray-400">Сгенерируй уличный никнейм для топ-чарта</p>
+                            </div>
+                        </div>
+
+                        <div id="nick-card" class="bg-gradient-to-r from-vice-pink/20 to-vice-purple/30 p-4 rounded-2xl border border-white/20 mb-4 text-center">
+                            <span class="text-[10px] uppercase text-gray-400 font-mono tracking-widest">ВАШ ИГРОВОЙ АВТОРИТЕТ</span>
+                            <div id="nick-output" class="text-2xl font-black gta-title text-vice-yellow tracking-wider mt-1">
+                                BOROV_BOSS_3000
+                            </div>
+                        </div>
+
+                        <button onclick="generateGangsterNickname()" class="w-full glass-panel hover:bg-vice-cyan/20 border border-vice-cyan/50 py-3 rounded-xl font-black uppercase text-xs tracking-wider text-vice-cyan transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-dice text-sm"></i>
+                            <span>Сгенерировать Никнейм</span>
+                        </button>
+                    </div>
+
+                    <!-- WIDGET 3: Wheel of Fortune / Loot Simulator -->
+                    <div class="glass-panel p-6 rounded-3xl border border-vice-yellow/30 relative">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-vice-yellow/20 border border-vice-yellow/40 flex items-center justify-center text-vice-yellow">
+                                <i class="fa-solid fa-dharmachakra text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-black text-white">Рулетка Наград Vice City</h4>
+                                <p class="text-xs text-gray-400">Испытай удачу и выиграй секретный бонус</p>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Wheel -->
+                        <div class="relative flex justify-center items-center my-2">
+                            <div class="absolute -top-3 z-20 text-vice-pink text-2xl filter drop-shadow">
+                                <i class="fa-solid fa-caret-down"></i>
+                            </div>
+                            <canvas id="wheel-canvas" width="220" height="220" class="rounded-full border-4 border-white/10"></canvas>
+                        </div>
+
+                        <button id="spin-btn" onclick="spinWheel()" class="w-full vice-btn-primary py-3 rounded-xl font-black uppercase text-xs tracking-wider text-white transition-all mt-2">
+                            Вращать рулетку!
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="editions" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="px-4 py-1.5 rounded-full bg-vice-pink/20 text-vice-pink text-xs font-black uppercase tracking-widest border border-vice-pink/30">
+                    Доступные варианты
+                </span>
+                <h2 class="text-4xl md:text-6xl font-black gta-title text-white mt-3">
+                    ВЫБЕРИТЕ СВОЕ <span class="vice-gradient-text">ИЗДАНИЕ</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
+                    От бесплатного стартового пакета до абсолютного VIP доступа без рекламы и с бонусами.
+                </p>
+            </div>
+
+            <!-- Editions Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- CARD 1: Standard Edition -->
+                <div class="glass-panel rounded-3xl overflow-hidden glass-card-hover flex flex-col border border-white/10 relative">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="Gemini_Generated_Image_v8eyxtv8eyxtv8ey.jpg" alt="Standard Edition" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-vice-dark via-transparent to-transparent"></div>
+                        <span class="absolute top-4 left-4 px-3.5 py-1 bg-gray-900/80 backdrop-blur-md rounded-full text-[10px] font-black text-gray-300 uppercase tracking-widest">
+                            Базовый вариант
+                        </span>
+                    </div>
+
+                    <div class="p-7 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-black text-white mb-1">Standard Edition</h3>
+                            <div class="text-3xl font-black text-emerald-400 mb-4 font-mono">
+                                БЕСПЛАТНО
+                            </div>
+                            <p class="text-gray-300 text-xs leading-relaxed mb-6">
+                                Обычное издание игры. Небольшое присутствие рекламы. Идеально для первого ознакомления с кликером.
+                            </p>
+
+                            <div class="space-y-2.5 mb-8 text-xs font-medium">
+                                <div class="flex items-center gap-2.5 text-gray-300">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+                                    <span>Обычные текстуры</span>
+                                </div>
+                                <div class="flex items-center gap-2.5 text-gray-300">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+                                    <span>Базовый кликер с выводом</span>
+                                </div>
+                                <div class="flex items-center gap-2.5 text-gray-500">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-500 text-sm"></i>
+                                    <span>Небольшое присутствие рекламы</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="openEditionModal('standard')" class="w-full glass-panel hover:bg-white/10 py-3.5 rounded-xl font-bold uppercase text-xs tracking-wider text-white border border-white/20 transition-all flex items-center justify-center gap-2">
+                            <span>Подробнее</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 2: Ukraine Edition -->
+                <div class="glass-panel rounded-3xl overflow-hidden glass-card-hover flex flex-col border border-vice-cyan/40 relative">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="Gemini_Generated_Image_89fm489fm489fm48.jpg" alt="Ukraine Edition" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-vice-dark via-transparent to-transparent"></div>
+                        <span class="absolute top-4 left-4 px-3.5 py-1 bg-vice-cyan text-black font-black backdrop-blur-md rounded-full text-[10px] uppercase tracking-widest">
+                            Special Texture Pack
+                        </span>
+                    </div>
+
+                    <div class="p-7 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-black text-white mb-1">Ukraine Edition</h3>
+                            <div class="text-3xl font-black text-vice-cyan mb-4 font-mono">
+                                100 <span class="text-lg font-bold">руб</span>
+                            </div>
+                            <p class="text-gray-300 text-xs leading-relaxed mb-6">
+                                Специальное издание с уникальными кастомными текстурами и оригинальными звуковыми эффектами.
+                            </p>
+
+                            <div class="space-y-2.5 mb-8 text-xs font-medium">
+                                <div class="flex items-center gap-2.5 text-white font-bold">
+                                    <i class="fa-solid fa-circle-check text-vice-cyan text-sm"></i>
+                                    <span>Кастомные текстуры</span>
+                                </div>
+                                <div class="flex items-center gap-2.5 text-white font-bold">
+                                    <i class="fa-solid fa-circle-check text-vice-cyan text-sm"></i>
+                                    <span>Кастомные звуки</span>
+                                </div>
+                                <div class="flex items-center gap-2.5 text-gray-400">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-500 text-sm"></i>
+                                    <span>Небольшое присутствие рекламы</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="openEditionModal('ukraine')" class="w-full glass-panel hover:bg-vice-cyan/20 py-3.5 rounded-xl font-bold uppercase text-xs tracking-wider text-vice-cyan border border-vice-cyan/50 transition-all flex items-center justify-center gap-2">
+                            <span>Подробнее</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 3: Unlimited Edition -->
+                <div class="glass-panel rounded-3xl overflow-hidden glass-card-hover flex flex-col border-2 border-vice-pink relative shadow-[0_0_50px_rgba(255,0,127,0.3)]">
+                    <!-- Top Gift Banner -->
+                    <div class="bg-gradient-to-r from-vice-pink via-vice-orange to-vice-yellow text-white text-center py-1.5 text-[11px] font-black uppercase tracking-widest shadow-md">
+                        🎁 В подарок: Ukraine Edition!
+                    </div>
+
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="Gemini_Generated_Image_lei27flei27flei2.jpg" alt="Unlimited Edition" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-vice-dark via-transparent to-transparent"></div>
+                        <span class="absolute top-4 left-4 px-3.5 py-1 bg-vice-pink text-white font-black backdrop-blur-md rounded-full text-[10px] uppercase tracking-widest shadow-lg">
+                            TOP ULTIMATE
+                        </span>
+                    </div>
+
+                    <div class="p-7 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-black text-white mb-1">Unlimited Edition</h3>
+                            <div class="text-3xl font-black text-vice-pink mb-4 font-mono">
+                                150 <span class="text-lg font-bold">руб</span>
+                            </div>
+                            <p class="text-gray-300 text-xs leading-relaxed mb-6">
+                                Версия без рекламы! Максимальная скорость заработка, приоритетная VIP-поддержка и подарочный пак.
+                            </p>
+
+                            <div class="space-y-2.5 mb-8 text-xs font-extrabold">
+                                <div class="flex items-center gap-2.5 text-white">
+                                    <i class="fa-solid fa-circle-check text-vice-pink text-sm"></i>
+                                    <span>Абсолютно БЕЗ рекламы</span>
+                                </div>
+                                <div class="flex items-center gap-2.5 text-white">
+                                    <i class="fa-solid fa-circle-check text-vice-pink text-sm"></i>
+                                    <span>Улучшенная поддержка</span>
+                                </div>
+                                <div class="flex items-center gap-2.5 text-vice-yellow">
+                                    <i class="fa-solid fa-gift text-sm"></i>
+                                    <span>В подарок: Ukraine Edition</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="openEditionModal('unlimited')" class="w-full vice-btn-primary py-3.5 rounded-xl font-black uppercase text-xs tracking-wider text-white transition-all flex items-center justify-center gap-2">
+                            <span>Подробнее</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="comparison" class="py-24 relative bg-black/40 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="px-4 py-1.5 rounded-full bg-vice-yellow/20 text-vice-yellow text-xs font-black uppercase tracking-widest border border-vice-yellow/30">
+                    Сводный анализ
+                </span>
+                <h2 class="text-4xl md:text-6xl font-black gta-title text-white mt-3">
+                    СРАВНЕНИЕ <span class="text-vice-cyan">ИЗДАНИЙ</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
+                    Наглядная матрица различий всех 3 версий BORCOIN 2.
+                </p>
+            </div>
+
+            <div class="glass-panel rounded-3xl overflow-hidden border border-white/10 shadow-2xl overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[700px]">
+                    <thead>
+                        <tr class="border-b border-white/10 bg-white/5 text-xs font-black uppercase tracking-wider">
+                            <th class="p-6 text-white text-base">Параметры и Фичи</th>
+                            <th class="p-6 text-center text-gray-300">Standard Edition</th>
+                            <th class="p-6 text-center text-vice-cyan">Ukraine Edition</th>
+                            <th class="p-6 text-center text-vice-pink">Unlimited Edition</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5 text-xs font-semibold">
+                        
+                        <!-- Custom Textures -->
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-5 text-gray-200">
+                                <span class="font-bold text-sm block">Кастомные текстуры</span>
+                                <span class="text-[11px] text-gray-500 font-normal">Уникальный визуал Vice City</span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-800/60 text-gray-400 border border-gray-700">
+                                    <i class="fa-solid fa-ban text-gray-500"></i> Отсутствуют
+                                </span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-950/80 text-emerald-400 font-bold border border-emerald-500/40">
+                                    <i class="fa-solid fa-check text-emerald-400"></i> Есть
+                                </span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-950/80 text-emerald-400 font-bold border border-emerald-500/40">
+                                    <i class="fa-solid fa-check text-emerald-400"></i> Есть
+                                </span>
+                            </td>
+                        </tr>
+
+                        <!-- Custom Sounds -->
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-5 text-gray-200">
+                                <span class="font-bold text-sm block">Кастомные звуки</span>
+                                <span class="text-[11px] text-gray-500 font-normal">Атмосферный саунддизайн</span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-800/60 text-gray-400 border border-gray-700">
+                                    <i class="fa-solid fa-ban text-gray-500"></i> Отсутствуют
+                                </span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-950/80 text-emerald-400 font-bold border border-emerald-500/40">
+                                    <i class="fa-solid fa-check text-emerald-400"></i> Есть
+                                </span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-950/80 text-emerald-400 font-bold border border-emerald-500/40">
+                                    <i class="fa-solid fa-check text-emerald-400"></i> Есть
+                                </span>
+                            </td>
+                        </tr>
+
+                        <!-- Ordinary Textures -->
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-5 text-gray-200">
+                                <span class="font-bold text-sm block">Обычные текстуры</span>
+                                <span class="text-[11px] text-gray-500 font-normal">Стандартное графическое исполнение</span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-950/80 text-emerald-400 font-bold border border-emerald-500/40">
+                                    <i class="fa-solid fa-check text-emerald-400"></i> Есть
+                                </span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-800/60 text-gray-400 border border-gray-700">
+                                    <i class="fa-solid fa-ban text-gray-500"></i> Заменены
+                                </span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-950/80 text-emerald-400 font-bold border border-emerald-500/40">
+                                    <i class="fa-solid fa-check text-emerald-400"></i> Есть (выбор)
+                                </span>
+                            </td>
+                        </tr>
+
+                        <!-- No Ads Feature -->
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-5 text-gray-200">
+                                <span class="font-bold text-sm block">Нет рекламы</span>
+                                <span class="text-[11px] text-gray-500 font-normal">Игра без баннеров и выплывающих окон</span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-800/60 text-gray-400 border border-gray-700">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Реклама есть
+                                </span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-800/60 text-gray-400 border border-gray-700">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Реклама есть
+                                </span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-950/80 text-emerald-400 font-bold border border-emerald-500/40">
+                                    <i class="fa-solid fa-check text-emerald-400"></i> БЕЗ РЕКЛАМЫ
+                                </span>
+                            </td>
+                        </tr>
+
+                        <!-- Support Priority -->
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-5 text-gray-200">
+                                <span class="font-bold text-sm block">Уровень поддержки</span>
+                                <span class="text-[11px] text-gray-500 font-normal">Скорость обработки тикетов</span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-800/60 text-gray-400 border border-gray-700">
+                                    <i class="fa-solid fa-user-slash text-gray-500"></i> Пониженный авторитет
+                                </span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-800/60 text-gray-400 border border-gray-700">
+                                    <i class="fa-solid fa-user-slash text-gray-500"></i> Пониженный авторитет
+                                </span>
+                            </td>
+                            <td class="p-5 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-950/80 text-emerald-400 font-bold border border-emerald-500/40">
+                                    <i class="fa-solid fa-check text-emerald-400"></i> Улучшенная (VIP)
+                                </span>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="payouts" class="py-20 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="glass-panel p-8 md:p-12 rounded-3xl border border-vice-pink/30 flex flex-col md:flex-row items-center justify-between gap-8 relative">
+                
+                <div>
+                    <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-black uppercase rounded-full border border-emerald-500/30">
+                        Live Payout Stream
+                    </span>
+                    <h3 class="text-3xl md:text-5xl font-black gta-title text-white mt-3">
+                        ПРЯМОЙ ЭФИР <span class="text-emerald-400">ВЫПЛАТ</span>
+                    </h3>
+                    <p class="text-gray-400 text-xs md:text-sm mt-2 max-w-xl">
+                        Присоединяйтесь к нашему Telegram каналу для получения мгновенных уведомлений о выводах и бонусах!
+                    </p>
+                </div>
+
+                <!-- Telegram Button -->
+                <a href="https://t.me" target="_blank" class="vice-btn-primary px-8 py-4 rounded-2xl font-black text-base uppercase tracking-wider text-white flex items-center gap-3 shrink-0">
+                    <i class="fa-brands fa-telegram text-2xl"></i>
+                    <span>Вступить в Telegram</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-white/10 glass-panel">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-center md:text-left">
+                <div class="text-3xl font-black gta-title text-white">
+                    BORCOIN <span class="text-vice-pink">2</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">
+                    © 2026 BOROV GAMES & VSRAT GAMES. Все права защищены. Vice City Vibe Edition.
+                </p>
+            </div>
+
+            <div class="flex gap-6 text-xl text-gray-400">
+                <a href="#" class="hover:text-vice-pink transition-colors"><i class="fa-brands fa-telegram"></i></a>
+                <a href="#" class="hover:text-vice-cyan transition-colors"><i class="fa-brands fa-vk"></i></a>
+                <a href="#" class="hover:text-vice-yellow transition-colors"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="edition-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-panel max-w-lg w-full rounded-3xl p-6 md:p-8 border border-white/20 relative shadow-2xl scale-95 transition-transform duration-300" id="modal-content">
+            <button onclick="closeEditionModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        /* Web Audio Synth Background Sound Toggle */
+        let audioCtx = null;
+        let synthOsc = null;
+        let isPlayingSynth = false;
+
+        function toggleSynthBeat() {
+            const icon = document.getElementById('sound-icon');
+            const text = document.getElementById('sound-text');
+
+            if (!isPlayingSynth) {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                // Synth Ambient Wave Generator
+                synthOsc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                synthOsc.type = 'sine';
+                synthOsc.frequency.setValueAtTime(110, audioCtx.currentTime); // Low synth bass
+
+                gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime); // Subtle volume
+
+                synthOsc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                synthOsc.start();
+                isPlayingSynth = true;
+
+                icon.className = 'fa-solid fa-volume-high text-emerald-400';
+                text.textContent = 'Звук: Вкл';
+            } else {
+                if (synthOsc) {
+                    synthOsc.stop();
+                    synthOsc.disconnect();
+                }
+                isPlayingSynth = false;
+                icon.className = 'fa-solid fa-volume-xmark text-rose-500';
+                text.textContent = 'Звук: Выкл';
+            }
+        }
+
+        /* WIDGET 1: Calculator Logic */
+        const hoursSlider = document.getElementById('hours-slider');
+        const hoursDisplay = document.getElementById('hours-display');
+        const calcMonthlyCash = document.getElementById('calc-monthly-cash');
+        const calcDaysBugatti = document.getElementById('calc-days-bugatti');
+        const calcLifePercent = document.getElementById('calc-life-percent');
+
+        let currentEditionMult = 1.0;
+
+        function updateRoiCalc() {
+            const hours = parseInt(hoursSlider.value);
+            hoursDisplay.textContent = `${hours} ${hours === 1 ? 'час' : hours < 5 ? 'часа' : 'часов'}`;
+
+            // Calculation formula
+            const baseMonthly = hours * 6000 * currentEditionMult;
+            const daysBugatti = Math.max(12, Math.round(15000000 / (baseMonthly / 30)));
+            const lifeProgress = Math.min(100, Math.round((baseMonthly / 25000) * 100));
+
+            calcMonthlyCash.textContent = `${Math.round(baseMonthly).toLocaleString('ru-RU')} ₽`;
+            calcDaysBugatti.textContent = `${daysBugatti} дней`;
+            calcLifePercent.textContent = `${lifeProgress}%`;
+        }
+
+        hoursSlider.addEventListener('input', updateRoiCalc);
+
+        function setCalcEdition(type, btn) {
+            document.querySelectorAll('.calc-edition-btn').forEach(b => {
+                b.classList.remove('active', 'border-vice-pink', 'bg-vice-pink/20', 'text-white');
+                b.classList.add('border-white/10', 'bg-white/5', 'text-gray-400');
+            });
+            btn.classList.add('active', 'border-vice-pink', 'bg-vice-pink/20', 'text-white');
+
+            if (type === 'standard') currentEditionMult = 1.0;
+            if (type === 'ukraine') currentEditionMult = 1.8;
+            if (type === 'unlimited') currentEditionMult = 3.5;
+
+            updateRoiCalc();
+        }
+
+        /* WIDGET 2: Nickname Generator */
+        const nickNamesPrefix = ['VIPER', 'BOROV', 'CYBER', 'VICE', 'TONY', 'NEON', 'GANGSTER', 'SCARFACE'];
+        const nickNamesSuffix = ['BOSS', 'LORD', '3000', 'KING', 'LEGEND', 'CLICKER', 'PRO', 'ULTRA'];
+
+        function generateGangsterNickname() {
+            const pre = nickNamesPrefix[Math.floor(Math.random() * nickNamesPrefix.length)];
+            const suf = nickNamesSuffix[Math.floor(Math.random() * nickNamesSuffix.length)];
+            const num = Math.floor(100 + Math.random() * 900);
+            
+            const nickOutput = document.getElementById('nick-output');
+            nickOutput.textContent = `${pre}_${suf}_${num}`;
+
+            // Visual animation
+            const nickCard = document.getElementById('nick-card');
+            nickCard.classList.add('scale-105', 'border-vice-pink');
+            setTimeout(() => nickCard.classList.remove('scale-105', 'border-vice-pink'), 200);
+        }
+
+        /* WIDGET 3: Wheel of Fortune Canvas */
+        const canvas = document.getElementById('wheel-canvas');
+        const ctx = canvas.getContext('2d');
+        const segments = ['+500 ₽', 'Текстуры', 'x2 Клик', 'Ukraine Pack', 'Без Рекламы', '+1000 ₽'];
+        const colors = ['#ff007f', '#7928ca', '#00f2fe', '#ff5e00', '#ffb700', '#10b981'];
+
+        function drawWheel(angle = 0) {
+            const numSegments = segments.length;
+            const arc = (Math.PI * 2) / numSegments;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < numSegments; i++) {
+                const segAngle = angle + i * arc;
+                ctx.beginPath();
+                ctx.fillStyle = colors[i];
+                ctx.moveTo(110, 110);
+                ctx.arc(110, 110, 100, segAngle, segAngle + arc);
+                ctx.fill();
+                ctx.stroke();
+
+                // Text
+                ctx.save();
+                ctx.translate(110, 110);
+                ctx.rotate(segAngle + arc / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 11px Montserrat";
+                ctx.fillText(segments[i], 85, 4);
+                ctx.restore();
+            }
+        }
+
+        let currentAngle = 0;
+        let isSpinning = false;
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const spinBtn = document.getElementById('spin-btn');
+            spinBtn.disabled = true;
+            spinBtn.textContent = 'Вращение...';
+
+            const extraDegrees = 1440 + Math.floor(Math.random() * 360); // 4 full spins + random
+            const startAngle = currentAngle;
+            const duration = 3000;
+            const startTime = performance.now();
+
+            function animate(now) {
+                const elapsed = now - startTime;
+                if (elapsed < duration) {
+                    const progress = elapsed / duration;
+                    const easeOut = 1 - Math.pow(1 - progress, 3);
+                    currentAngle = startAngle + (extraDegrees * Math.PI / 180) * easeOut;
+                    drawWheel(currentAngle);
+                    requestAnimationFrame(animate);
+                } else {
+                    isSpinning = false;
+                    spinBtn.disabled = false;
+                    spinBtn.textContent = 'Вращать еще раз!';
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        /* Modal Details Window */
+        const editionDetails = {
+            standard: {
+                title: "Standard Edition",
+                price: "БЕСПЛАТНО",
+                image: "Gemini_Generated_Image_v8eyxtv8eyxtv8ey.jpg",
+                desc: "Базовая версия игры для всех желающих попробовать заработок в Vice Clicker.",
+                features: [
+                    "Стандартные текстуры и звуки",
+                    "Небольшое присутствие рекламных баннеров",
+                    "Стандартный вывод на карты и кошельки"
+                ]
+            },
+            ukraine: {
+                title: "Ukraine Edition",
+                price: "100 руб",
+                image: "Gemini_Generated_Image_89fm489fm489fm48.jpg",
+                desc: "Эксклюзивная версия с уникальным стилизованным визуалом.",
+                features: [
+                    "Кастомные текстуры с уникальной атмосферой",
+                    "Кастомные звуки и озвучка",
+                    "Небольшое присутствие рекламы"
+                ]
+            },
+            unlimited: {
+                title: "Unlimited Edition",
+                price: "150 руб",
+                image: "Gemini_Generated_Image_lei27flei27flei2.jpg",
+                desc: "Полная премиум версия без ограничений и баннеров.",
+                features: [
+                    "Абсолютно БЕЗ рекламы",
+                    "Улучшенная VIP-поддержка",
+                    "В ПОДАРОК: Ukraine Edition включена бесплатно!",
+                    "Мгновенный приоритетный вывод денег"
+                ]
+            }
+        };
+
+        const modal = document.getElementById('edition-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalBody = document.getElementById('modal-body');
+
+        function openEditionModal(key) {
+            const item = editionDetails[key];
+            modalBody.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" class="w-full h-48 object-cover rounded-2xl mb-4 border border-white/10">
+                <span class="text-[10px] font-black uppercase text-vice-pink tracking-widest">Информация об издании</span>
+                <h3 class="text-3xl font-black text-white mb-1">${item.title}</h3>
+                <div class="text-2xl font-black text-emerald-400 mb-4 font-mono">${item.price}</div>
+                <p class="text-gray-300 text-xs mb-4 leading-relaxed">${item.desc}</p>
+                <div class="border-t border-white/10 pt-4 mb-6">
+                    <h4 class="text-xs font-bold uppercase text-gray-400 mb-3">Состав издания:</h4>
+                    <ul class="space-y-2 text-xs text-gray-200">
+                        ${item.features.map(f => `<li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> ${f}</li>`).join('')}
+                    </ul>
+                </div>
+                <button onclick="closeEditionModal()" class="w-full vice-btn-primary py-3 rounded-xl font-bold uppercase text-xs text-white">
+                    Закрыть
+                </button>
+            `;
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeEditionModal() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Init on load
+        window.onload = function() {
+            drawWheel();
+            updateRoiCalc();
+        };
+    </script>
+</body>
+</html>
